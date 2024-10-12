@@ -1,31 +1,31 @@
 package org.cs4471.helloworld.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import org.cs4471.helloworld.Registry;
+import org.cs4471.helloworld.registry.RegistryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class Controller {
-    @GetMapping("/url")
-    public String getServiceURL(HttpServletRequest request) {
-        return request.getRequestURL().toString();
-    }
+    @Autowired
+    private RegistryService registryService;
 
     @GetMapping("/")
-    public String HelloWorld() {
+    public String root() {
         return "Hello World";
     }
 
     @GetMapping("/heartbeat")
-    public boolean Heartbeat() {
+    public boolean heartbeat() {
+        System.out.println("HelloWorld : Received heartbeat ping from registry");
         return true;
     }
 
     @GetMapping("/exit")
-    public void Exit() {
+    public void exit() {
+        System.out.println("HelloWorld : Exiting...");
         // Deregister and exit
-        Registry.Deregister();
+        registryService.Deregister();
         System.exit(1);
     }
 }

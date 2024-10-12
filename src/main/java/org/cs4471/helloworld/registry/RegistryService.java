@@ -1,20 +1,24 @@
-package org.cs4471.helloworld;
+package org.cs4471.helloworld.registry;
 
-import org.cs4471.helloworld_registry.shared.RegistryStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
-public class Registry {
-    private static WebClient client;
+@Component("registryService")
+public class RegistryService {
+    private String serviceName;
+    private WebClient client;
 
-    public static void Set(String url) {
+    public void Set(String serviceName, String url) {
+        this.serviceName = serviceName;
         client = WebClient.builder().baseUrl(url).build();
     }
 
-    public static RegistryStatus.REGISTRY_STATUS Register() {
-        String result = client.get().uri("/register").retrieve().bodyToMono(String.class)
+    public RegistryStatus.REGISTRY_STATUS Register() {
+        String send = String.format("/register?service=%s", serviceName);
+        String result = client.get().uri(send).retrieve().bodyToMono(String.class)
                 .timeout(Duration.ofSeconds(10))
                 .onErrorResume(Exception.class, ex -> Mono.just(RegistryStatus.REGISTRY_STATUS.FAILURE.toString()))
                 .block();
@@ -31,7 +35,7 @@ public class Registry {
         return RegistryStatus.REGISTRY_STATUS.FAILURE;
     }
 
-    public static void Deregister() {
-        client.get().uri("/deregister").retrieve().bodyToMono(Boolean.class);
+    public void Deregister() {
+        client.get().uri(String.format("/deregister?service=%s", serviceName)).retrieve().bodyToMono(Boolean.class);
     }
 }

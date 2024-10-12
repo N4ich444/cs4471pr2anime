@@ -1,4 +1,4 @@
-package org.cs4471.helloworld_registry.shared;
+package org.cs4471.helloworld.registry;
 
 public class RegistryStatus {
     public enum REGISTRY_STATUS { SUCCESS, FAILURE, BUSY, EXISTS };
