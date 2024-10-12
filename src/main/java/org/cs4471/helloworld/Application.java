@@ -3,12 +3,9 @@ package org.cs4471.helloworld;
 import org.cs4471.helloworld_registry.shared.RegistryStatus;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @SpringBootApplication
 public class Application {
-
-
 	public static void main(String[] args) {
 		// Terminate if no arguments supplied
 		if (args.length == 0) {
@@ -31,15 +28,15 @@ public class Application {
 				RegistryStatus.REGISTRY_STATUS status = Registry.Register();
 
 				switch (status) {
-					case RegistryStatus.REGISTRY_STATUS.SUCCESS:
+					case SUCCESS:
 						System.out.println("HelloWorld : Registered service!");
 						success = true;
 						break;
-					case RegistryStatus.REGISTRY_STATUS.EXISTS:
+					case EXISTS:
 						System.out.println("HelloWorld : This URL has already been registered to the server!");
 						System.exit(1);
 						break;
-					case RegistryStatus.REGISTRY_STATUS.FAILURE:
+					case FAILURE:
 						retries--;
 						if (retries <= 0) {
 							System.out.println("HelloWorld : Failed to register, exiting...");
@@ -50,7 +47,7 @@ public class Application {
 						);
 						Thread.sleep(5000);
 						break;
-					case RegistryStatus.REGISTRY_STATUS.BUSY:
+					case BUSY:
 						retries--;
 						if (retries <= 0) {
 							System.out.println("HelloWorld : The register is still busy after 5 tries. Exiting...");
