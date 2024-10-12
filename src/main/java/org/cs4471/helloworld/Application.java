@@ -3,6 +3,7 @@ package org.cs4471.helloworld;
 import org.cs4471.helloworld.registry.RegistryService;
 import org.cs4471.helloworld.registry.RegistryStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -10,15 +11,28 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Application implements ApplicationRunner {
-	public String serviceName = "HelloWorld";
+	@Value("${service.registrar}")
+	private String serviceRegistrar;
+
+	@Value("${service.name}")
+	private String serviceName;
+
+	@Value("${service.url}")
+	private String serviceURL;
+
+	@Value("${service.desc}")
+	private String serviceDesc;
 
 	@Autowired
 	private RegistryService registryService;
 
-	public void start(String url) {
+	@Override
+	public void run(ApplicationArguments args) throws Exception {
+		System.out.println(String.format("%s : Starting service with URL %s. Description: %s", serviceName, serviceURL, serviceDesc));
+
 		// Connect to service controller
-		registryService.Set(serviceName, url);
-		System.out.println(String.format("%s : Connecting to %s", serviceName, url));
+		registryService.Set(serviceRegistrar, serviceName,serviceURL, serviceDesc);
+		System.out.println(String.format("%s : Connecting to %s", serviceName, serviceRegistrar));
 
 		// Broadcast to service registry
 		int retries = 6;
@@ -65,18 +79,7 @@ public class Application implements ApplicationRunner {
 		catch (Exception e) {}
 	}
 
-	@Override
-	public void run(ApplicationArguments args) throws Exception {
-		start(args.getSourceArgs()[0]);
-	}
-
 	public static void main(String[] args) {
-		// Terminate if no arguments supplied
-		if (args.length == 0) {
-			System.out.println("No server URL argument provided! Terminating...");
-			System.exit(1);
-		}
-
 		SpringApplication.run(Application.class, args);
 	}
 }
