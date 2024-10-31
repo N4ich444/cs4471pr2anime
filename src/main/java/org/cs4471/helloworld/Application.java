@@ -30,6 +30,7 @@ public class Application implements ApplicationRunner {
 	// Comment this entire section out for testing to prevent hanging
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
+		/*
 		System.out.println(String.format("%s : Starting service with URL %s. Description: %s", serviceName, serviceURL, serviceDesc));
 
 		// Connect to service controller
@@ -52,6 +53,7 @@ public class Application implements ApplicationRunner {
 			}
 		}
 		catch (Exception e) {}
+		*/
 	}
 
 	public static void main(String[] args) {

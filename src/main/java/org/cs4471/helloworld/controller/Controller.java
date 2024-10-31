@@ -19,8 +19,8 @@ public class Controller {
     }
 
     // Example with a request value
-    @GetMapping("/")
-    public Response root2(HttpServletRequest request) {
+    @GetMapping("/test")
+    public Response test(HttpServletRequest request) {
         String value = request.getParameter("value");
         if (value == null) value = "null";
         return new Response(200, "HelloWorld", "Hello World with value = " + value + "!");
