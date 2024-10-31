@@ -27,6 +27,7 @@ public class Application implements ApplicationRunner {
 	@Autowired
 	private RegistryService registryService;
 
+	// Comment this entire section out for testing to prevent hanging
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		System.out.println(String.format("%s : Starting service with URL %s. Description: %s", serviceName, serviceURL, serviceDesc));
@@ -36,7 +37,6 @@ public class Application implements ApplicationRunner {
 		System.out.println(String.format("%s : Connecting to %s", serviceName, serviceRegistrar));
 
 		// Broadcast to service registry
-		int retries = 6;
 		try {
 			while (true) {
 				Response status = registryService.Register();
@@ -46,16 +46,7 @@ public class Application implements ApplicationRunner {
 					break;
 				}
 				else {
-					retries--;
-					if (retries <= 0) {
-						System.out.println(String.format("%s : Failed to register, exiting...", serviceName));
-						System.exit(1);
-						break;
-					}
-
-					System.out.println(
-							String.format("%s : Failed to register... retrying (%d attempts left)", serviceName, retries)
-					);
+					System.out.println(String.format("%s : Failed to register, retrying...", serviceName));
 					Thread.sleep(sleepTime);
 				}
 			}
