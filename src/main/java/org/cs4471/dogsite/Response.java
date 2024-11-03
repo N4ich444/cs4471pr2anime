@@ -1,4 +1,4 @@
-package org.cs4471.helloworld;
+package org.cs4471.dogsite;
 
 import lombok.Getter;
 import lombok.Setter;

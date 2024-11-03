@@ -1,8 +1,8 @@
-package org.cs4471.helloworld.controller;
+package org.cs4471.dogsite.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.cs4471.helloworld.Response;
-import org.cs4471.helloworld.registry.RegistryService;
+import org.cs4471.dogsite.Response;
+import org.cs4471.dogsite.registry.RegistryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +13,7 @@ public class Controller {
     private RegistryService registryService;
 
     // Modify this, this is the root endpoint
-    @GetMapping("/")
+    @GetMapping("/root")
     public Response root() {
         return new Response(200, "HelloWorld", "Hello World!");
     }

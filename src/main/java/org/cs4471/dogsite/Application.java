@@ -1,6 +1,6 @@
-package org.cs4471.helloworld;
+package org.cs4471.dogsite;
 
-import org.cs4471.helloworld.registry.RegistryService;
+import org.cs4471.dogsite.registry.RegistryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
@@ -30,7 +30,6 @@ public class Application implements ApplicationRunner {
 	// Comment this entire section out for testing to prevent hanging
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		/*
 		System.out.println(String.format("%s : Starting service with URL %s. Description: %s", serviceName, serviceURL, serviceDesc));
 
 		// Connect to service controller
@@ -53,7 +52,6 @@ public class Application implements ApplicationRunner {
 			}
 		}
 		catch (Exception e) {}
-		*/
 	}
 
 	public static void main(String[] args) {
