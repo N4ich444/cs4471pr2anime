@@ -37,6 +37,7 @@ public class Application implements ApplicationRunner {
 		System.out.println(String.format("%s : Connecting to %s", serviceName, serviceRegistrar));
 
 		// Broadcast to service registry
+		/* 
 		try {
 			while (true) {
 				Response status = registryService.Register();
@@ -52,6 +53,7 @@ public class Application implements ApplicationRunner {
 			}
 		}
 		catch (Exception e) {}
+		*/
 	}
 
 	public static void main(String[] args) {

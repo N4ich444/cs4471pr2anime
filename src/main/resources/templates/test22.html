@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Item List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">Items</h1>
+        <div class="row" id="item-container">
+            <!-- Items will be added here dynamically -->
+        </div>
+    </div>
+
+    <script>
+        // Fetch items from Spring Boot API and populate the page
+        fetch('/api/items')
+            .then(response => response.json())
+            .then(items => {
+                const container = document.getElementById('item-container');
+
+                items.forEach(item => {
+                    // Create a column with Bootstrap classes
+                    const itemCol = document.createElement('div');
+                    itemCol.classList.add('col-md-4', 'mb-4'); // Adjust col size based on screen width
+
+                    // Customize the item display within the column
+                    itemCol.innerHTML = `
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">${item.name}</h5>
+                                <p class="card-text">${item.description}</p>
+                            </div>
+                        </div>
+                    `;
+
+                    // Append item column to container
+                    container.appendChild(itemCol);
+                });
+            })
+            .catch(error => console.error('Error fetching items:', error));
+    </script>
+</body>
+</html>
