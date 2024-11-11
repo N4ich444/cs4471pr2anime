@@ -100,7 +100,7 @@ public class StaticController {
     private JSONObject getJikanOnce(String title) {
         //String apiurl = "https://api.jikan.moe/v4/anime?q='%s'";
         //test error handling with %s = zzzz
-        String apiquery = String.format("https://api.jikan.moe/v4/anime?q=%s", title);
+        String apiquery = String.format("https://api.jikan.moe/v4/anime?q='%s'", title);
 
         String mal_response = WebClient.builder().baseUrl(apiquery)
         .build()
@@ -111,16 +111,20 @@ public class StaticController {
         .onErrorResume(Exception.class, ex -> Mono.just(""))
         .block();
 
-        //System.out.println(mal_response);
+        //system.out.println(mal_response);
 
 
         try {
             //JSONObject jikanAPI = new Gson().fromJson(mal_response, JSONObject.class);
+            //System.err.println(mal_response);
             JSONObject jikanAPI = new JSONObject(mal_response); //fixed bug
+            System.err.println("a");
             
             JSONArray data = jikanAPI.getJSONArray("data");
+            System.err.println("b");
 
             JSONObject firstResult;
+            System.err.println("c");
 
             //checks if anime is not in MAL and returns an empty JSONobject if it is the case
             if (data.isEmpty()) {
@@ -132,6 +136,7 @@ public class StaticController {
             
             return firstResult;
         } catch (JSONException je) {
+            System.err.println(je);
             return null;
         }
         
@@ -155,12 +160,29 @@ public class StaticController {
                     //handles that bootstrap will use
                     String handle = String.format("anime%d", i); //json for the title on MAL
                     String annHandle = String.format("ann%d", i); //anime news network wiki page
+                    String nameHandle = String.format("name%d", i); //anime news net title
+                    String pojoHandle = String.format("pojo%d", i); //anime news net title
 
                     System.out.println(annPage(id));
+
+                    String ann = annPage(id);
+                    JSONObject mal = getJikanOnce(title);
+
         
                     //pass to MAL Jikan API
-                    model.addAttribute(annHandle, annPage(id)); //url
-                    model.addAttribute(handle, getJikanOnce(title)); //json
+                    model.addAttribute(annHandle, ann); //url
+                    model.addAttribute(handle, mal); //json
+                    model.addAttribute(nameHandle, title); //anime name
+
+                    AncillaryStructs pojo = new AncillaryStructs(nameHandle, nameHandle);
+                    pojo.addMalRating(mal, ann, ann);
+
+                    //Jikan API has a request limit
+                    try {
+                        Thread.sleep(500);  // Delay for 500 milliseconds
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt(); // Restore interrupted state
+                    }
                     
 
                     
@@ -181,6 +203,7 @@ public class StaticController {
     private String annPage(int id) {
         return String.format("https://www.animenewsnetwork.com/encyclopedia/anime.php?id=%d", id);
     }
+    
     
     
  

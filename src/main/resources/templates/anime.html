@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Anime Titles</title>
+    <title>Anime Titles<a th:href = "@{${'ann0'}}"></a></title>
+    
+    
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -11,20 +13,22 @@
 
 <div class="container">
     <h1 class="mt-4 mb-4">Top Anime Titles</h1>
+    <h1 th:text="${anime4}">Default Text</h1>
     <div class="row">
+        
         <!-- Loop through anime entries -->
         <div class="col-md-4 mb-4" th:each="index : ${#numbers.sequence(0, 4)}">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${'Anime ' + (index + 1)}"></h5>
                     
-                    <!-- ANN Link -->
+                    <!-- ANN Link cannot do this -->
                     <p>
                         <a th:href="${'ann' + index}" target="_blank" class="btn btn-primary">View on ANN</a>
                     </p>
                     
                     <!-- Display JSON Data from MAL (if available) -->
-                    <div th:if="${'anime' + index}">
+                    <div th:if="@{${'anime' + index}}">
                         <h6>Details from MAL:</h6>
                         <ul>
                             <li><strong>Title:</strong> <span th:text="${'anime' + index + '.title'}"></span></li>
