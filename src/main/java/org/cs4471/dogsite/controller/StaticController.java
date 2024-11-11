@@ -30,7 +30,7 @@ import reactor.core.publisher.Mono;
 //process MAL json in webpage not here.
 public class StaticController {
    
-    //to be deleted and replaced by anime, a sanity check to see the server is still working
+    //to be deleted and replaced by what is currently /anime, a sanity check to see the server is still working.
     @GetMapping("/")
     public String testpage(Model model) {
         String response = WebClient.builder().baseUrl("https://dog.ceo/api/breeds/image/random").build().get().retrieve().bodyToMono(String.class)
@@ -51,19 +51,17 @@ public class StaticController {
 
     
     //current getmapping is placeholder
+    //todo error checking
     @GetMapping("/anime")
     public String anime(Model model) {
         JSONObject gann = getAnnTitles();
         JSONArray items = gann.getJSONArray("item");
 
 
-        //model.addAttribute("anntitles",getAnnTitles().toString());
+        //binds everything needed on anime.html
         jikanConnector(items, model);
 
-
-        
-
-
+        //anime.html
         return "anime";
     }
     
@@ -81,12 +79,12 @@ public class StaticController {
         .onErrorResume(Exception.class, ex -> Mono.just(""))
         .block();
 
-        Type type = new TypeToken<HashMap<String, Object>>(){}.getType();
+        
 
         try {
             //converts XML to json object
             JSONObject xmlJSONObj = XML.toJSONObject(ann_response);
-            return xmlJSONObj;
+            return xmlJSONObj.getJSONObject("report");
         } catch (JSONException je) {
             return null;
         }
@@ -97,7 +95,7 @@ public class StaticController {
     //get MAL data of that title
     private JSONObject getJikanOnce(String title) {
         //String apiurl = "https://api.jikan.moe/v4/anime?q='%s'";
-        String apiquery = String.format("https://api.jikan.moe/v4/anime?q='%s'", title);
+        String apiquery = String.format("https://api.jikan.moe/v4/anime?q=%s", title);
 
         String mal_response = WebClient.builder().baseUrl(apiquery)
         .build()
@@ -108,9 +106,12 @@ public class StaticController {
         .onErrorResume(Exception.class, ex -> Mono.just(""))
         .block();
 
+        System.out.println(mal_response);
+
 
         try {
-            JSONObject jikanAPI = new Gson().fromJson(mal_response, JSONObject.class);
+            //JSONObject jikanAPI = new Gson().fromJson(mal_response, JSONObject.class);
+            JSONObject jikanAPI = new JSONObject(mal_response); //fixed bug
             
             JSONArray data = jikanAPI.getJSONArray("data");
 
@@ -125,6 +126,7 @@ public class StaticController {
         
     }
 
+    //returns a success or failure status
     private boolean  jikanConnector(JSONArray items, Model model) {
         try{
             if (items == null) {
