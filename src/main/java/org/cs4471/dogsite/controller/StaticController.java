@@ -47,7 +47,7 @@ public class StaticController {
     }
 
     
-    
+    //current getmapping is placeholder
     @GetMapping("/anime")
     public String anime(Model model) {
         JSONObject gann = getAnnTitles();
@@ -64,7 +64,7 @@ public class StaticController {
     }
     
 
-
+    //helper method
     //gets top ann animes labelled for json processing
     private JSONObject getAnnTitles() {
         //5 most recent articles
@@ -89,6 +89,7 @@ public class StaticController {
         
     }
 
+    //helper method
     //get MAL data of that title
     private JSONObject getJikanOnce(String title) {
         String apiurl = "https://api.jikan.moe/v4/anime?q='%s'";
@@ -119,12 +120,24 @@ public class StaticController {
         
     }
 
-    //gets link for ann
+    private JSONObject[] JikanConnector(JSONArray items) {
+        if (items == null) {
+            return null;
+        }
+        else {
+            
+        }
+
+        return null;
+
+    }
+
+    //creates link for ann page
     private String annPage(int id) {
         return "";
 
     }
-    //gets link for mal
+    //creates link for mal page
     private String malPage(int id) {
         return "";
 
