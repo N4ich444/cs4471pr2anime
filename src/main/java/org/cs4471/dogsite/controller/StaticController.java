@@ -45,6 +45,8 @@ public class StaticController {
         HashMap<String, String> mapping = new Gson().fromJson(response, type);
 
         model.addAttribute("imgurl", mapping.get("message"));
+
+        System.out.println(model);
         
         return "hello";
     }
@@ -60,6 +62,8 @@ public class StaticController {
 
         //binds everything needed on anime.html
         jikanConnector(items, model);
+
+        System.out.println(model);
 
         //anime.html
         return "anime";
@@ -151,10 +155,13 @@ public class StaticController {
                     //handles that bootstrap will use
                     String handle = String.format("anime%d", i); //json for the title on MAL
                     String annHandle = String.format("ann%d", i); //anime news network wiki page
+
+                    System.out.println(annPage(id));
         
                     //pass to MAL Jikan API
+                    model.addAttribute(annHandle, annPage(id)); //url
                     model.addAttribute(handle, getJikanOnce(title)); //json
-                    model.addAttribute(annHandle,annPage(id)); //url
+                    
 
                     
 
@@ -162,9 +169,7 @@ public class StaticController {
                 }
                 return true;
             }
-        }catch (JSONException je) {
-            return false;
-        } catch (NullPointerException n) {
+        }catch (JSONException | NullPointerException je) {
             return false;
         }
         
