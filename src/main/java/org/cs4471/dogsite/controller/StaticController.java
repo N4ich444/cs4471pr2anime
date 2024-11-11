@@ -158,9 +158,9 @@ public class StaticController {
                     int id = item.getInt("id");
                     
                     //handles that bootstrap will use
-                    String handle = String.format("anime%d", i); //json for the title on MAL
-                    String annHandle = String.format("ann%d", i); //anime news network wiki page
-                    String nameHandle = String.format("name%d", i); //anime news net title
+                    //String handle = String.format("anime%d", i); //json for the title on MAL
+                    //String annHandle = String.format("ann%d", i); //anime news network wiki page
+                    //String nameHandle = String.format("name%d", i); //anime news net title (may be redundant)
                     String pojoHandle = String.format("pojo%d", i); //anime news net title
 
                     System.out.println(annPage(id));
@@ -170,12 +170,13 @@ public class StaticController {
 
         
                     //pass to MAL Jikan API
-                    model.addAttribute(annHandle, ann); //url
-                    model.addAttribute(handle, mal); //json
-                    model.addAttribute(nameHandle, title); //anime name
+                    //model.addAttribute(annHandle, ann); //url
+                    //model.addAttribute(handle, mal); //json
+                    //model.addAttribute(nameHandle, title); //anime name
 
-                    AncillaryStructs pojo = new AncillaryStructs(nameHandle, nameHandle);
-                    pojo.addMalRating(mal, ann, ann);
+                    AncillaryStructs pojo = new AncillaryStructs(title, ann);
+                    pojo.addMalRating(mal, title);
+                    model.addAttribute(pojoHandle,pojo);
 
                     //Jikan API has a request limit
                     try {

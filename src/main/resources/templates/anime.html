@@ -13,7 +13,12 @@
 
 <div class="container">
     <h1 class="mt-4 mb-4">Top Anime Titles</h1>
-    <h1 th:text="${anime4}">Default Text</h1>
+    <h1 th:text="${pojo3.getTitle}">Default Text</h1>
+    <h1 th:text="${pojo3.getAnnUrl}">Default Text</h1>
+    <h1 th:text="${pojo3.getMalUrl}">Default Text</h1>
+    <h1 th:text="${pojo3.getImgUrl}">Default Text</h1>
+    <h1 th:text="${pojo3.getRank}">Default Text</h1>
+    <h1 th:text="${pojo3.getScore}">Default Text</h1>
     <div class="row">
         
         <!-- Loop through anime entries -->
