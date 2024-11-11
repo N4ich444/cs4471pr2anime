@@ -95,6 +95,7 @@ public class StaticController {
     //get MAL data of that title
     private JSONObject getJikanOnce(String title) {
         //String apiurl = "https://api.jikan.moe/v4/anime?q='%s'";
+        //test error handling with %s = zzzz
         String apiquery = String.format("https://api.jikan.moe/v4/anime?q=%s", title);
 
         String mal_response = WebClient.builder().baseUrl(apiquery)
@@ -106,7 +107,7 @@ public class StaticController {
         .onErrorResume(Exception.class, ex -> Mono.just(""))
         .block();
 
-        System.out.println(mal_response);
+        //System.out.println(mal_response);
 
 
         try {
@@ -115,8 +116,16 @@ public class StaticController {
             
             JSONArray data = jikanAPI.getJSONArray("data");
 
-            JSONObject firstResult = data.getJSONObject(0);
+            JSONObject firstResult;
 
+            //checks if anime is not in MAL and returns an empty JSONobject if it is the case
+            if (data.isEmpty()) {
+                firstResult = new JSONObject();
+            }
+            else {
+                firstResult = data.getJSONObject(0);
+            }
+            
             return firstResult;
         } catch (JSONException je) {
             return null;
@@ -154,6 +163,8 @@ public class StaticController {
                 return true;
             }
         }catch (JSONException je) {
+            return false;
+        } catch (NullPointerException n) {
             return false;
         }
         
