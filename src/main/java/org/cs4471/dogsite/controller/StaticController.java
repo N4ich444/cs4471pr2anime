@@ -18,13 +18,16 @@ import com.google.gson.reflect.TypeToken;
 
 import reactor.core.publisher.Mono;
 
-
+/*
+ * Static controller for the anime microservice
+ */
 
 
 
 @Controller
 
 //replace with my API urls
+//process MAL json in webpage not here.
 public class StaticController {
    
     //to be deleted and replaced by anime, a sanity check to see the server is still working
@@ -55,6 +58,7 @@ public class StaticController {
 
 
         //model.addAttribute("anntitles",getAnnTitles().toString());
+        jikanConnector(items, model);
 
 
         
@@ -92,8 +96,8 @@ public class StaticController {
     //helper method
     //get MAL data of that title
     private JSONObject getJikanOnce(String title) {
-        String apiurl = "https://api.jikan.moe/v4/anime?q='%s'";
-        String apiquery = String.format(apiurl, title);
+        //String apiurl = "https://api.jikan.moe/v4/anime?q='%s'";
+        String apiquery = String.format("https://api.jikan.moe/v4/anime?q='%s'", title);
 
         String mal_response = WebClient.builder().baseUrl(apiquery)
         .build()
@@ -111,6 +115,7 @@ public class StaticController {
             JSONArray data = jikanAPI.getJSONArray("data");
 
             JSONObject firstResult = data.getJSONObject(0);
+
             return firstResult;
         } catch (JSONException je) {
             return null;
@@ -120,28 +125,45 @@ public class StaticController {
         
     }
 
-    private JSONObject[] JikanConnector(JSONArray items) {
-        if (items == null) {
-            return null;
-        }
-        else {
-            
-        }
+    private boolean  jikanConnector(JSONArray items, Model model) {
+        try{
+            if (items == null) {
+                return false;
+            }
+            else {
+                for (int i = 0; i < items.length(); i++) {
+                    //ANN
+                    JSONObject item = items.getJSONObject(i);
+                    String title = item.getString("name");
+                    int id = item.getInt("id");
+                    
+                    //handles that bootstrap will use
+                    String handle = String.format("anime%d", i); //json for the title on MAL
+                    String annHandle = String.format("ann%d", i); //anime news network wiki page
+        
+                    //pass to MAL Jikan API
+                    model.addAttribute(handle, getJikanOnce(title)); //json
+                    model.addAttribute(annHandle,annPage(id)); //url
 
-        return null;
+                    
+
+
+                }
+                return true;
+            }
+        }catch (JSONException je) {
+            return false;
+        }
+        
+    
 
     }
 
     //creates link for ann page
     private String annPage(int id) {
-        return "";
-
+        return String.format("https://www.animenewsnetwork.com/encyclopedia/anime.php?id=%d", id);
     }
-    //creates link for mal page
-    private String malPage(int id) {
-        return "";
-
-    }
+    
     
  
 
