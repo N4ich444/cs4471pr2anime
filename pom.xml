@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.cs4471</groupId>
-	<artifactId>dogsite</artifactId>
+	<artifactId>animeranking</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>DogSite</name>
-	<description>Picture of dogs microservice</description>
+	<name>AnimeRanking</name>
+	<description>Description</description>
 	<url/>
 	<licenses>
 		<license/>

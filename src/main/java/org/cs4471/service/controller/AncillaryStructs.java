@@ -1,4 +1,4 @@
-package org.cs4471.dogsite.controller;
+package org.cs4471.service.controller;
 
 import java.math.BigDecimal;
 

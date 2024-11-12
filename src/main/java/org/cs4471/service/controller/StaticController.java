@@ -1,4 +1,4 @@
-package org.cs4471.dogsite.controller;
+package org.cs4471.service.controller;
 
 import java.time.Duration;
 
@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono;
 //replace with my API urls
 //process MAL json in webpage not here.
 public class StaticController {
-   
+
 
     
     //current getmapping is placeholder
@@ -101,7 +101,7 @@ public class StaticController {
             //System.err.println(mal_response);
             JSONObject jikanAPI = new JSONObject(mal_response); //fixed bug
             System.err.println("a");
-            
+
             JSONArray data = jikanAPI.getJSONArray("data");
             System.err.println("b");
 
@@ -146,11 +146,11 @@ public class StaticController {
                     String pojoHandle = String.format("pojo%d", i); //anime news net title
 
                     System.out.println(annPage(id));
-                    
+
                     //pass to MAL Jikan API
                     String ann = annPage(id);
                     JSONObject mal = getJikanOnce(title);
-                    
+
                     //model.addAttribute(annHandle, ann); //url
                     //model.addAttribute(handle, mal); //json
                     //model.addAttribute(nameHandle, title); //anime name
@@ -190,8 +190,8 @@ public class StaticController {
     }
     
     
-    
- 
+
+
 
     
     
