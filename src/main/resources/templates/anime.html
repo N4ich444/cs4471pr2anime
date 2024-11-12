@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Anime Titles<a th:href = "@{${'ann0'}}"></a></title>
-    
+    <title>Top Anime Titles</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -12,41 +11,89 @@
 <body>
 
 <div class="container">
-    <h1 class="mt-4 mb-4">Top Anime Titles</h1>
-    <h1 th:text="${pojo3.getTitle}">Default Text</h1>
-    <h1 th:text="${pojo3.getAnnUrl}">Default Text</h1>
-    <h1 th:text="${pojo3.getMalUrl}">Default Text</h1>
-    <h1 th:text="${pojo3.getImgUrl}">Default Text</h1>
-    <h1 th:text="${pojo3.getRank}">Default Text</h1>
-    <h1 th:text="${pojo3.getScore}">Default Text</h1>
-    <div class="row">
-        
-        <!-- Loop through anime entries -->
-        <div class="col-md-4 mb-4" th:each="index : ${#numbers.sequence(0, 4)}">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${'Anime ' + (index + 1)}"></h5>
-                    
-                    <!-- ANN Link cannot do this -->
-                    <p>
-                        <a th:href="${'ann' + index}" target="_blank" class="btn btn-primary">View on ANN</a>
-                    </p>
-                    
-                    <!-- Display JSON Data from MAL (if available) -->
-                    <div th:if="@{${'anime' + index}}">
-                        <h6>Details from MAL:</h6>
-                        <ul>
-                            <li><strong>Title:</strong> <span th:text="${'anime' + index + '.title'}"></span></li>
-                            <li><strong>Synopsis:</strong> <span th:text="${'anime' + index + '.synopsis'}"></span></li>
-                            <li><strong>Score:</strong> <span th:text="${'anime' + index + '.score'}"></span></li>
-                            
-                            <!-- Add other fields you want to display here -->
-                        </ul>
-                    </div>
-                </div>
-            </div>
+    
+    <h1 class="mt-4 mb-4 text-center">Top Anime Titles</h1>
+
+    <!-- Anime 1 -->
+    <div class="row mb-4">
+        <div class="col-12 col-md-3">
+            <img th:src="${pojo0.getImgUrl}" class="img-thumbnail" alt="Anime Image">
+        </div>
+        <div class="col-12 col-md-9">
+            <h2 th:text = "${pojo0.getTitle}"></h2>
+            <p><strong>Rank on MAL: <span th:text = "${pojo0.getRank < 0 ? 'N/A' : pojo0.getRank}"></span></strong> </p>
+            <p><strong>Score on MAL: <span th:text ="${pojo0.getScore < 0 ? 'N/A' : pojo0.getScore}"></span></strong> </span></p>
+            <p>
+                <a th:href="${pojo0.getAnnUrl}" target="_blank">View the ANN page</a> | 
+                <a th:href="${pojo0.getMalUrl}" target="_blank">View the MAL page</a>
+            </p>
         </div>
     </div>
+
+    <!-- Anime 2 -->
+    <div class="row mb-4">
+        <div class="col-12 col-md-3">
+            <img th:src="${pojo1.getImgUrl}" class="img-thumbnail" alt="Anime Image">
+        </div>
+        <div class="col-12 col-md-9">
+            <h2><span th:text = ${pojo1.getTitle}></span></h2>
+            <p><strong>Rank on MAL: <span th:text = "${pojo1.getRank < 0 ? 'N/A' : pojo1.getRank}"></span></strong> </p>
+            <p><strong>Score on MAL: <span th:text ="${pojo1.getScore < 0 ? 'N/A' : pojo1.getScore}"></span></strong> </span></p>
+            <p>
+                <a th:href="${pojo1.getAnnUrl}" target="_blank">View the ANN page</a> | 
+                <a th:href="${pojo1.getMalUrl}" target="_blank">View the MAL page</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Anime 3 -->
+    <div class="row mb-4">
+        <div class="col-12 col-md-3">
+            <img th:src="${pojo2.getImgUrl}" class="img-thumbnail" alt="Anime Image">
+        </div>
+        <div class="col-12 col-md-9">
+            <h2><span th:text = ${pojo2.getTitle}></span></h2>
+            <p><strong>Rank on MAL: <span th:text = "${pojo2.getRank < 0 ? 'N/A' : pojo2.getRank}"></span></strong> </p>
+            <p><strong>Score on MAL: <span th:text ="${pojo2.getScore < 0 ? 'N/A' : pojo2.getScore}"></span></strong> </span></p>
+            <p>
+                <a th:href="${pojo2.getAnnUrl}" target="_blank">View the ANN page</a> | 
+                <a th:href="${pojo2.getMalUrl}" target="_blank">View the MAL page</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Anime 4 -->
+    <div class="row mb-4">
+        <div class="col-12 col-md-3">
+            <img th:src="${pojo3.getImgUrl}" class="img-thumbnail" alt="Anime Image">
+        </div>
+        <div class="col-12 col-md-9">
+            <h2><span th:text = ${pojo3.getTitle}></span></h2>
+            <p><strong>Rank on MAL: <span th:text = "${pojo3.getRank < 0 ? 'N/A' : pojo3.getRank}"></span></strong> </p>
+            <p><strong>Score on MAL: <span th:text ="${pojo3.getScore < 0 ? 'N/A' : pojo3.getScore}"></span></strong> </span></p>
+            <p>
+                <a th:href="${pojo3.getAnnUrl}" target="_blank">View the ANN page</a> | 
+                <a th:href="${pojo3.getMalUrl}" target="_blank">View the MAL page</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Anime 5 -->
+    <div class="row mb-4">
+        <div class="col-12 col-md-3">
+            <img th:src="${pojo4.getImgUrl}" class="img-thumbnail" alt="Anime Image">
+        </div>
+        <div class="col-12 col-md-9">
+            <h2><span th:text = ${pojo4.getTitle}></span></h2>
+            <p><strong>Rank on MAL: <span th:text = "${pojo4.getRank < 0 ? 'N/A' : pojo4.getRank}"></span></strong> </p>
+            <p><strong>Score on MAL: <span th:text ="${pojo4.getScore < 0 ? 'N/A' : pojo4.getScore}"></span></strong> </span></p>
+            <p>
+                <a th:href="${pojo4.getAnnUrl}" target="_blank">View the ANN page</a> | 
+                <a th:href="${pojo4.getMalUrl}" target="_blank">View the MAL page</a>
+            </p>
+        </div>
+    </div>
+
 </div>
 
 <!-- Bootstrap JS, Popper.js, and jQuery -->

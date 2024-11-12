@@ -32,7 +32,7 @@ public class AncillaryStructs {
                 if (data.has("rank") && !data.isNull("rank")) this.rank = data.getInt("rank");
                 if (data.has("score") && !data.isNull("score")) this.score = data.getBigDecimal("score");
                 
-                Boolean imageActivated = false;
+                
                 
                 //getting images
                 JSONObject images = data.optJSONObject("images");

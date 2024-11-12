@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Anime Titles<a th:href = "@{${'ann0'}}"></a></title>
+    
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <h1 class="mt-4 mb-4">Top Anime Titles</h1>
+    <h1 th:text="${pojo3.getTitle}">Default Text</h1>
+    <h1 th:text="${pojo3.getAnnUrl}">Default Text</h1>
+    <h1 th:text="${pojo3.getMalUrl}">Default Text</h1>
+    <h1 th:text="${pojo3.getImgUrl}">Default Text</h1>
+    <h1 th:text="${pojo3.getRank}">Default Text</h1>
+    <h1 th:text="${pojo3.getScore}">Default Text</h1>
+    
+    <img th:src="${pojo0.getImgUrl}" class="img-thumbnail" alt="https://commons.wikimedia.org/wiki/File:Placeholder_view_vector.svg">
+    <a th:href="${pojo0.getAnnUrl}" >View the ANN page for <span th:text="${pojo0.getTitle}"></span></a>
+    <a th:href="${pojo0.getMalUrl}" >View the MAL page for <span th:text="${pojo0.getTitle}"></span></a>
+
+    <img th:src="${pojo1.getImgUrl}" class="img-thumbnail" alt="https://commons.wikimedia.org/wiki/File:Placeholder_view_vector.svg">
+    <a th:href="${pojo1.getAnnUrl}" >View the ANN page for <span th:text="${pojo0.getTitle}"></span></a>
+    <a th:href="${pojo1.getMalUrl}" >View the MAL page for <span th:text="${pojo0.getTitle}"></span></a>
+
+
+    <img th:src="${pojo2.getImgUrl}" class="img-thumbnail" alt="https://commons.wikimedia.org/wiki/File:Placeholder_view_vector.svg">
+    <a th:href="${pojo2.getAnnUrl}" >View the ANN page for <span th:text="${pojo0.getTitle}"></span></a>
+    <a th:href="${pojo2.getMalUrl}" >View the MAL page for <span th:text="${pojo0.getTitle}"></span></a>
+
+    <img th:src="${pojo3.getImgUrl}" class="img-thumbnail" alt="https://commons.wikimedia.org/wiki/File:Placeholder_view_vector.svg">
+    <a th:href="${pojo3.getAnnUrl}" >View the ANN page for <span th:text="${pojo0.getTitle}"></span></a>
+    <a th:href="${pojo3.getMalUrl}" >View the MAL page for <span th:text="${pojo0.getTitle}"></span></a>
+
+
+    <img th:src="${pojo4.getImgUrl}" class="img-thumbnail" alt="https://commons.wikimedia.org/wiki/File:Placeholder_view_vector.svg">
+    <a th:href="${pojo4.getAnnUrl}" >View the ANN page for <span th:text="${pojo0.getTitle}"></span></a>
+    <a th:href="${pojo4.getMalUrl}" >View the MAL page for <span th:text="${pojo0.getTitle}"></span></a>
+
+
+
+    
+
+        
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+            Column
+            </div>
+            <div class="col">
+            Column
+            </div>
+            <div class="col">
+            Column
+            </div>
+        </div>
+        </div>
+</div>
+
+<!-- Bootstrap JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
