@@ -16,7 +16,7 @@ public class Controller {
     // Modify this, this is the root endpoint
     @GetMapping("/root")
     public Response root() {
-        return new Response(200, "HelloWorld", "Hello World!");
+        return new Response(200, "Anime", "root!");
     }
 
     // Example with a request value
@@ -24,23 +24,23 @@ public class Controller {
     public Response test(HttpServletRequest request) {
         String value = request.getParameter("value");
         if (value == null) value = "null";
-        return new Response(200, "HelloWorld", "Hello World with value = " + value + "!");
+        return new Response(200, "Anime", "Hello World with value = " + value + "!");
     }
 
     // Sends back a heartbeat state when requested by registry
     @GetMapping("/heartbeat")
     public Response heartbeat() {
-        System.out.println("HelloWorld : Received heartbeat ping from registry");
-        return new Response(200, "HelloWorld", "");
+        System.out.println("Anime : Received heartbeat ping from registry");
+        return new Response(200, "Anime", "");
     }
 
     // Shut down the service and deregister from registry
     @GetMapping("/exit")
     public void exit() {
-        System.out.println("HelloWorld : Exiting in 30 seconds...");
+        System.out.println("Anime : Exiting in 30 seconds...");
         // Deregister and exit
         registryService.Deregister();
-        System.out.println("HelloWorld : Exiting...");
+        System.out.println("Anime : Exiting...");
         System.exit(1);
     }
 }

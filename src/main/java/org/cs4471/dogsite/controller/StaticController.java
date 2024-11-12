@@ -1,20 +1,17 @@
 package org.cs4471.dogsite.controller;
 
-import java.lang.reflect.Type;
 import java.time.Duration;
-import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import org.springframework.web.server.ResponseStatusException;
 
 import reactor.core.publisher.Mono;
 
@@ -30,40 +27,25 @@ import reactor.core.publisher.Mono;
 //process MAL json in webpage not here.
 public class StaticController {
    
-    //to be deleted and replaced by what is currently /anime, a sanity check to see the server is still working.
-    @GetMapping("/")
-    public String testpage(Model model) {
-        String response = WebClient.builder().baseUrl("https://dog.ceo/api/breeds/image/random").build().get().retrieve().bodyToMono(String.class)
-                .timeout(Duration.ofSeconds(10))
-                .onErrorResume(Exception.class, ex -> Mono.just(""))
-                .block();
-
-
-        
-
-        Type type = new TypeToken<HashMap<String, String>>(){}.getType();
-        HashMap<String, String> mapping = new Gson().fromJson(response, type);
-
-        model.addAttribute("imgurl", mapping.get("message"));
-
-        System.out.println(model);
-        
-        return "hello";
-    }
 
     
     //current getmapping is placeholder
     //todo error checking
-    @GetMapping("/anime")
+    @GetMapping("/")
     public String anime(Model model) {
         JSONObject gann = getAnnTitles();
         JSONArray items = gann.getJSONArray("item");
 
 
         //binds everything needed on anime.html
-        jikanConnector(items, model);
+        Boolean jkc = jikanConnector(items, model);
 
-        System.out.println(model);
+        //System.out.println(model);
+
+        if (!jkc) {
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Anime Microservice is currently unavailable.");
+        }
+
 
         //anime.html
         return "anime";
@@ -157,28 +139,29 @@ public class StaticController {
                     String title = item.getString("name");
                     int id = item.getInt("id");
                     
-                    //handles that bootstrap will use
+                    //handles that bootstrap can access
                     //String handle = String.format("anime%d", i); //json for the title on MAL
                     //String annHandle = String.format("ann%d", i); //anime news network wiki page
                     //String nameHandle = String.format("name%d", i); //anime news net title (may be redundant)
                     String pojoHandle = String.format("pojo%d", i); //anime news net title
 
                     System.out.println(annPage(id));
-
+                    
+                    //pass to MAL Jikan API
                     String ann = annPage(id);
                     JSONObject mal = getJikanOnce(title);
-
-        
-                    //pass to MAL Jikan API
+                    
                     //model.addAttribute(annHandle, ann); //url
                     //model.addAttribute(handle, mal); //json
                     //model.addAttribute(nameHandle, title); //anime name
 
+                    //pojo containing everything
                     AncillaryStructs pojo = new AncillaryStructs(title, ann);
                     pojo.addMalRating(mal, title);
                     model.addAttribute(pojoHandle,pojo);
 
                     //Jikan API has a request limit
+                    //delays to prevent hitting denial
                     try {
                         Thread.sleep(500);  // Delay for 500 milliseconds
                     } catch (InterruptedException e) {
@@ -192,6 +175,7 @@ public class StaticController {
                 }
                 return true;
             }
+            //something is wrong with the json file
         }catch (JSONException | NullPointerException je) {
             return false;
         }

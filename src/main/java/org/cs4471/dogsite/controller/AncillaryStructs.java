@@ -25,10 +25,15 @@ public class AncillaryStructs {
         this.rank = -1;    // Default to -1 to signify "N/A"
     }
 
+    //adds mal rating if it is availiable
     public void addMalRating(JSONObject data, String name) {
         try {
+            //checks if JSON is empty
             if (!data.isEmpty()) {
+                //gets MAL url
                 this.url = data.getString("url");
+
+                //gets nullable values rank and score
                 if (data.has("rank") && !data.isNull("rank")) this.rank = data.getInt("rank");
                 if (data.has("score") && !data.isNull("score")) this.score = data.getBigDecimal("score");
                 
@@ -50,7 +55,7 @@ public class AncillaryStructs {
                     }
                 }
 
-                
+                //error checking, probably redundant
                 if (this.imgurl == null) this.imgurl = "";
                 
             }
@@ -65,7 +70,7 @@ public class AncillaryStructs {
 
     
 
-    //getters
+    //getters for bootstrap
     public String getTitle() {
         return this.name;
     }
