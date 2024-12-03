@@ -5,7 +5,12 @@ import java.math.BigDecimal;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-//pojo for the returned JSON
+/**
+ * pojo for the returned JSON
+ * @author Alan Kuang
+ */
+
+//gives required items
 public class AncillaryStructs {
     //ann variables
     String name = "";

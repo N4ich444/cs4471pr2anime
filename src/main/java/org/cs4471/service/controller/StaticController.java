@@ -15,40 +15,54 @@ import org.springframework.web.server.ResponseStatusException;
 
 import reactor.core.publisher.Mono;
 
-/*
+/**
  * Static controller for the anime microservice
+ * Gathers all the items required for the microservice webpage
+ * @author Alan Kuang
  */
 
 
 
 @Controller
 
-//replace with my API urls
-//process MAL json in webpage not here.
+//Microservice
 public class StaticController {
 
 
     
     //current getmapping is placeholder
-    //todo error checking
     @GetMapping("/")
     public String anime(Model model) {
-        JSONObject gann = getAnnTitles();
-        JSONArray items = gann.getJSONArray("item");
-
-
-        //binds everything needed on anime.html
-        Boolean jkc = jikanConnector(items, model);
-
-        //System.out.println(model);
-
-        if (!jkc) {
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Anime Microservice is currently unavailable.");
+        JSONObject gann = getAnnTitles(); //may nullptr
+        //ANN api fetch failed
+        if (gann == null) {
+            throw new ResponseStatusException(HttpStatus
+            .SERVICE_UNAVAILABLE, 
+            "Service is unavailable due to a failure in fetching from the ANN API.");
         }
 
+        //access MAL
+        try{
+            JSONArray items = gann.getJSONArray("item"); 
 
-        //anime.html
-        return "anime";
+
+            //binds everything needed on anime.html
+            
+            Boolean jkc = jikanConnector(items, model);
+
+            //System.out.println(model);
+
+            //throw new Exception("hello 500");
+
+            //returns anime.html
+            return "anime";
+        }
+        //some error happened
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus
+            .INTERNAL_SERVER_ERROR, 
+            "Unexpected error: " + e.getMessage(), e);
+        }
     }
     
 
@@ -56,6 +70,7 @@ public class StaticController {
     //gets top ann animes labelled for json processing
     private JSONObject getAnnTitles() {
         //5 most recent articles
+        //String apiurl "https://www.animenewsnetwork.com/encyclopedia/reports.xml?id=155&type=anime&nlist=5"
         String ann_response = WebClient.builder().baseUrl("https://www.animenewsnetwork.com/encyclopedia/reports.xml?id=155&type=anime&nlist=5")
         .build()
         .get()
@@ -81,7 +96,8 @@ public class StaticController {
     //get MAL data of that title
     private JSONObject getJikanOnce(String title) {
         //String apiurl = "https://api.jikan.moe/v4/anime?q='%s'";
-        //test error handling with %s = zzzz
+        //test error handling by replacing url
+        //title is inputted to request
         String apiquery = String.format("https://api.jikan.moe/v4/anime?q='%s'", title);
 
         String mal_response = WebClient.builder().baseUrl(apiquery)
@@ -93,20 +109,19 @@ public class StaticController {
         .onErrorResume(Exception.class, ex -> Mono.just(""))
         .block();
 
-        //system.out.println(mal_response);
+        //system.out.println(mal_response); //debug
 
 
         try {
-            //JSONObject jikanAPI = new Gson().fromJson(mal_response, JSONObject.class);
-            //System.err.println(mal_response);
+            //System.err.println(mal_response); //debug
             JSONObject jikanAPI = new JSONObject(mal_response); //fixed bug
-            System.err.println("a");
+            //System.err.println("a"); //debug
 
             JSONArray data = jikanAPI.getJSONArray("data");
-            System.err.println("b");
+            //System.err.println("b"); //debug
 
             JSONObject firstResult;
-            System.err.println("c");
+            //System.err.println("c"); //debug
 
             //checks if anime is not in MAL and returns an empty JSONobject if it is the case
             if (data.isEmpty()) {
@@ -140,9 +155,11 @@ public class StaticController {
                     int id = item.getInt("id");
                     
                     //handles that bootstrap can access
+                    //commented out blocks containing these 3 are pre pojo handles and attributes and is no longer used
                     //String handle = String.format("anime%d", i); //json for the title on MAL
                     //String annHandle = String.format("ann%d", i); //anime news network wiki page
                     //String nameHandle = String.format("name%d", i); //anime news net title (may be redundant)
+
                     String pojoHandle = String.format("pojo%d", i); //anime news net title
 
                     System.out.println(annPage(id));
